@@ -1,0 +1,379 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link';
+import {
+ GraduationCap, BookOpen, Users, Award, Star, ChevronRight, Play,
+ CheckCircle, ArrowRight, Sparkles, Brain, Shield, Zap, Globe,
+ BarChart3, MessageSquare, Calendar, Menu, X
+} from 'lucide-react';
+
+import BeamsBackground from '@/components/ui/beams-background';
+import CardFlip from '@/components/ui/card-flip';
+
+// ─── Landing Navbar ───────────────────────────────────────────────────────────
+function LandingNavbar() {
+ const [scrolled, setScrolled] = useState(false);
+ const [menuOpen, setMenuOpen] = useState(false);
+
+ useEffect(() => {
+ const handleScroll = () => setScrolled(window.scrollY > 20);
+ window.addEventListener('scroll', handleScroll);
+ return () => window.removeEventListener('scroll', handleScroll);
+ }, []);
+
+ return (
+ <nav
+ className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800' : 'bg-transparent'}`}
+ >
+ <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+ {/* Logo */}
+ <Link href="/" className="flex items-center gap-2.5 group" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+ <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+ <GraduationCap size={20} className="text-white" />
+ </div>
+ <span className={`font-bold text-lg tracking-tight ${scrolled ? 'text-zinc-900 dark:text-white' : 'text-zinc-900 dark:text-white'}`}>CampusLearn</span>
+ </Link>
+
+ {/* Desktop nav */}
+ <div className="hidden md:flex items-center gap-8">
+ {['Stats', 'How It Works', 'FAQ'].map(item => (
+ <a
+ key={item}
+ href={`#${item.toLowerCase().replace(/ /g, '-')}`}
+ className={`text-sm font-medium transition-colors ${scrolled ? 'text-zinc-600 hover:text-orange-500 dark:text-zinc-300' : 'text-zinc-600 hover:text-orange-500 dark:text-zinc-300'}`}
+ >
+ {item}
+ </a>
+ ))}
+ </div>
+
+ {/* CTA buttons */}
+ <div className="hidden md:flex items-center gap-3">
+ <Link href="/login" className="btn btn-primary text-sm px-5 py-2">
+ Sign In
+ </Link>
+ </div>
+
+ {/* Mobile menu button */}
+ <button
+ className="md:hidden text-zinc-900 dark:text-white p-2"
+ onClick={() => setMenuOpen(!menuOpen)}
+ >
+ {menuOpen ? <X size={22} /> : <Menu size={22} />}
+ </button>
+ </div>
+
+ {/* Mobile menu */}
+ {menuOpen && (
+ <motion.div
+ initial={{ opacity: 0, height: 0 }}
+ animate={{ opacity: 1, height: 'auto' }}
+ className="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800"
+ >
+ <div className="px-6 py-4 space-y-3">
+ {['Stats', 'How It Works', 'FAQ'].map(item => (
+ <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="block text-zinc-600 dark:text-zinc-300 hover:text-orange-500 py-2 text-sm" onClick={() => setMenuOpen(false)}>
+ {item}
+ </a>
+ ))}
+ <Link href="/login" className="btn btn-primary w-full mt-2 text-sm">Sign In</Link>
+ </div>
+ </motion.div>
+ )}
+ </nav>
+ );
+}
+
+// ─── Hero Section ─────────────────────────────────────────────────────────────
+function HeroSection() {
+ return (
+ <BeamsBackground className="pt-24 pb-16">
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-12">
+        <div className="grid lg:grid-cols-1 gap-12 items-center text-center max-w-3xl mx-auto">
+          {/* Left content */}
+ <motion.div
+ initial={{ opacity: 0, x: -40 }}
+ animate={{ opacity: 1, x: 0 }}
+ transition={{ duration: 0.7 }}
+ >
+ {/* No Badge */}
+
+ <motion.h1
+ initial={{ opacity: 0, y: 20 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+ className="text-5xl lg:text-7xl font-bold leading-tight mb-6 text-zinc-950 dark:text-white"
+ >
+ Smarter <br/>
+ <span className="text-orange-500">College Learning</span>
+ </motion.h1>
+
+ <motion.p
+ initial={{ opacity: 0, y: 20 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+ className="text-lg text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed max-w-xl mx-auto"
+ >
+ A centralized, role-based e-learning platform for colleges. Manage courses, attendance, assignments, and quizzes all in one place.
+ </motion.p>
+
+ <motion.div
+ initial={{ opacity: 0, y: 20 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+ className="flex flex-wrap gap-4 mb-12 justify-center"
+ >
+ <Link href="/login" className="btn btn-primary px-7 py-3 text-base">
+ Start Free Today
+ </Link>
+ <Link href="#how-it-works" className="btn btn-secondary px-7 py-3 text-base">
+ Learn How It Works
+ </Link>
+ </motion.div>
+ </motion.div>
+ </div>
+ </div>
+ </BeamsBackground>
+ );
+}
+
+// ─── Statistics Section ───────────────────────────────────────────────────────
+function StatsSection() {
+ const stats = [
+ { value: '10K+', label: 'Active Students', icon: <Users size={24} /> },
+ { value: '500+', label: 'Courses Available', icon: <BookOpen size={24} /> },
+ { value: '98%', label: 'Satisfaction Rate', icon: <Star size={24} /> },
+ { value: '50+', label: 'Partner Colleges', icon: <Globe size={24} /> },
+ ];
+
+ return (
+ <section id="stats" className="py-20 bg-zinc-950 dark:bg-zinc-900 border-y border-zinc-800">
+ <div className="max-w-7xl mx-auto px-6">
+ <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+ {stats.map((stat, i) => (
+ <motion.div
+ key={stat.label}
+ initial={{ opacity: 0, scale: 0.8 }}
+ whileInView={{ opacity: 1, scale: 1 }}
+ viewport={{ once: true }}
+ transition={{ duration: 0.5, delay: i * 0.1 }}
+ className="text-center text-white"
+ >
+ <div className="w-14 h-14 rounded-2xl bg-orange-500/20 text-orange-500 flex items-center justify-center mx-auto mb-3">
+ {stat.icon}
+ </div>
+ <p className="text-4xl font-bold mb-1">{stat.value}</p>
+ <p className="text-zinc-400 text-sm">{stat.label}</p>
+ </motion.div>
+ ))}
+ </div>
+ </div>
+ </section>
+ );
+}
+
+// ─── How It Works ─────────────────────────────────────────────────────────────
+function HowItWorksSection() {
+ const steps = [
+ { step: '01', title: 'Register & Join', desc: 'Create your account and get assigned to your department and courses.', icon: <Users size={22} /> },
+ { step: '02', title: 'Access Courses', desc: 'Watch video lessons, download notes, and track your progress.', icon: <BookOpen size={22} /> },
+ { step: '03', title: 'Learn & Engage', desc: 'Submit assignments, attempt quizzes, and discuss in forums.', icon: <Brain size={22} /> },
+ { step: '04', title: 'Earn Certificates', desc: 'Complete courses, maintain attendance, and earn certificates.', icon: <Award size={22} /> },
+ ];
+
+ return (
+ <section id="how-it-works" className="py-24 bg-white dark:bg-zinc-950">
+ <div className="max-w-7xl mx-auto px-6">
+ <motion.div
+ initial={{ opacity: 0, y: 20 }}
+ whileInView={{ opacity: 1, y: 0 }}
+ viewport={{ once: true }}
+ className="text-center mb-16"
+ >
+ <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">How CampusLearn Works</h2>
+ <p className="text-zinc-500 dark:text-zinc-400 text-lg max-w-xl mx-auto">Four simple steps to transform your academic experience.</p>
+ </motion.div>
+
+ <div className="grid md:grid-cols-4 gap-6 relative">
+ {/* Connecting line */}
+ <div className="hidden md:block absolute top-10 left-[10%] right-[10%] h-px bg-zinc-200 dark:bg-zinc-800" />
+
+ {steps.map((step, i) => (
+            <motion.div
+              key={step.step}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.1, type: "spring", bounce: 0.3 }}
+              className="text-center relative z-10 cursor-default p-6 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+            >
+ <div className="w-20 h-20 rounded-2xl bg-orange-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/20">
+ <div className="text-white">{step.icon}</div>
+ </div>
+ <div className="text-xs font-bold tracking-wider mb-1 text-orange-500">STEP {step.step}</div>
+ <h3 className="font-bold text-zinc-900 dark:text-white mb-2">{step.title}</h3>
+ <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">{step.desc}</p>
+ </motion.div>
+ ))}
+ </div>
+ </div>
+ </section>
+ );
+}
+
+// ─── FAQ Section ──────────────────────────────────────────────────────────────
+function FAQSection() {
+ const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const faqs = [
+    { q: 'Is CampusLearn free to use?', a: 'Yes. CampusLearn is completely free for students. Colleges require an institutional license to deploy the platform.' },
+    { q: 'What features are included?', a: 'CampusLearn provides comprehensive attendance management, course delivery, assignment tracking, an AI assistant, and a leaderboard.' },
+    { q: 'Is my data secure?', a: 'We use industry-standard security and encryption protocols. Your data is never sold or shared with third parties.' },
+    { q: 'Can faculty track student performance?', a: 'Absolutely. Faculty dashboards provide deep analytics on student attendance, grades, and overall participation.' },
+    { q: 'How long does deployment take?', a: 'Our standard deployment for a single institution typically takes less than 48 hours.' }
+  ];
+
+ return (
+ <section id="faq" className="py-24 bg-zinc-50 dark:bg-zinc-900">
+ <div className="max-w-3xl mx-auto px-6">
+ <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+ <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+ </motion.div>
+ <div className="space-y-3">
+ {faqs.map((faq, i) => (
+ <motion.div
+ key={i}
+ initial={{ opacity: 0, y: 10 }}
+ whileInView={{ opacity: 1, y: 0 }}
+ viewport={{ once: true }}
+ transition={{ delay: i * 0.08 }}
+ className="rounded-xl overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800"
+ >
+ <button
+ className="w-full flex items-center justify-between p-5 text-left"
+ onClick={() => setOpenIndex(openIndex === i ? null : i)}
+ >
+ <span className="font-medium text-zinc-900 dark:text-white">{faq.q}</span>
+ <ChevronRight size={16} className={`text-zinc-400 transition-transform ${openIndex === i ? 'rotate-90' : ''}`} />
+ </button>
+ {openIndex === i && (
+ <motion.div
+ initial={{ height: 0, opacity: 0 }}
+ animate={{ height: 'auto', opacity: 1 }}
+ className="px-5 pb-5 text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed"
+ >
+ {faq.a}
+ </motion.div>
+ )}
+ </motion.div>
+ ))}
+ </div>
+ 
+ <div className="mt-12 text-center bg-white dark:bg-zinc-950 p-6 border border-zinc-200 dark:border-zinc-800">
+ <p className="text-zinc-600 dark:text-zinc-400 mb-2">
+ Still have questions? Reach out to our support team.
+ </p>
+ <p className="text-base font-bold text-zinc-900 dark:text-white">
+ Our Promise: We will respond to all inquiries within 24 hours.
+ </p>
+ </div>
+ </div>
+ </section>
+ );
+}
+
+// ─── CTA Section ──────────────────────────────────────────────────────────────
+function CTASection() {
+  return (
+    <section className="py-24 bg-white dark:bg-zinc-950">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6 bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400">
+            Join 10,000+ Students
+          </div>
+          <h2 className="text-5xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">
+            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-400">Transform</span> Your Learning?
+          </h2>
+          <p className="text-zinc-600 dark:text-zinc-400 text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+            Join CampusLearn today and experience the future of college education.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/login" className="btn btn-primary px-8 py-3.5 text-base shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-shadow">
+              Get Started
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+function Footer() {
+ return (
+ <footer className="py-12 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
+ <div className="max-w-7xl mx-auto px-6">
+ <div className="grid md:grid-cols-4 gap-8 mb-8">
+ <div>
+ <div className="flex items-center gap-2 mb-4">
+ <div className="w-8 h-8 rounded-xl bg-orange-500 flex items-center justify-center">
+ <GraduationCap size={16} className="text-white" />
+ </div>
+ <span className="font-bold text-zinc-900 dark:text-white">CampusLearn</span>
+ </div>
+ <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+ One Platform for Smarter College Learning. Replacing multiple apps with one beautiful solution.
+ </p>
+ </div>
+          {[
+            { title: 'Platform', links: [{ name: 'Stats', href: '#stats' }, { name: 'How It Works', href: '#how-it-works' }] },
+            { title: 'Support', links: [{ name: 'FAQ', href: '#faq' }, { name: 'Contact Admin', href: '#' }] },
+            { title: 'Company', links: [{ name: 'Privacy Policy', href: '/privacy' }, { name: 'Terms of Service', href: '/terms' }] },
+          ].map(col => (
+ <div key={col.title}>
+ <h4 className="font-semibold text-zinc-900 dark:text-white text-sm mb-4">{col.title}</h4>
+ <ul className="space-y-2">
+ {col.links.map(link => (
+ <li key={link.name}>
+ <Link href={link.href} className="text-sm text-zinc-500 hover:text-orange-500 dark:text-zinc-400 transition-colors">{link.name}</Link>
+ </li>
+ ))}
+ </ul>
+ </div>
+ ))}
+ </div>
+ <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 flex flex-col md:flex-row items-center justify-between">
+ <p className="text-xs text-zinc-400">© 2026 CampusLearn. All rights reserved.</p>
+ <p className="text-xs text-zinc-400 mt-2 md:mt-0">Made with ❤️ by CampusLearn Team</p>
+ </div>
+ </div>
+ </footer>
+ );
+}
+
+// ─── Main Landing Page ────────────────────────────────────────────────────────
+export default function LandingPage() {
+ return (
+ <main className="bg-white dark:bg-zinc-950">
+ <LandingNavbar />
+ <HeroSection />
+ <StatsSection />
+ <HowItWorksSection />
+ <FAQSection />
+ <CTASection />
+ <Footer />
+ <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 z-50">
+ <Link href="/login" className="btn btn-primary w-full py-3 text-base flex items-center justify-center">
+ Start Free Today
+ </Link>
+ </div>
+ </main>
+ );
+}
