@@ -29,13 +29,6 @@
 - **Interactive Dashboards:** Beautiful charts and statistics showing attendance trends, grading metrics, and active enrollments.
 - **Real-time Notifications:** In-app notifications for new announcements, assignment deadlines, and grade publications.
 
-### 🎯 Placement Preparation *(Added by Nayana)*
-- **Aptitude & Technical Practice:** Practice modules and assessments for domain-specific preparation.
-- **Mock Interviews:** Interactive interview practice and mock question preparation.
-- **Resume Analyzer:** Resume review with instant scoring and recommendations.
-- **Company Tracking & Opportunities:** View eligible recruiting companies, drives, and job criteria.
-- **Placement Analytics:** Comprehensive dashboards for students, HODs, and Admins to monitor batch readiness and placement statistics.
-
 ### 🎨 Modern, Premium Design
 - **Dark/Light Mode:** Seamless theme switching.
 - **Beautiful UI:** Built with Tailwind CSS and animated with Framer Motion for a fluid, application-like feel.
@@ -143,8 +136,5 @@ campuslearn/
 ```
 
 ---
-
-## 👥 Contributors & Feature Additions
-
-- **Nayana G. Naik**: **Placement Preparation** — Aptitude practice, mock interview simulation, resume analyzer, company opportunity tracking, and placement analytics dashboards.
-- **Sinchana**: Attendance shortage alert notification system.
+###contibution 
+sinchana
